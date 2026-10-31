@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Percentages Revision Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: navy band → sticky chapter nav → four chapters, each = revision notes then inline practice cards → sticky score/share bar */
+:root{
+  --bg:#F3F6FA; --surface:#FFFFFF; --ink:#13213A; --muted:#5A6A82; --line:#D9E1EB;
+  --band:#0E1F3D; --band-ink:#F2F6FB; --teal:#0C9696; --teal-soft:#E0F4F3; --amber:#E8952A; --amber-soft:#FCF0DD;
+  --good:#1C8F52; --good-soft:#E3F4EA; --bad:#C93E35; --bad-soft:#FBE7E5;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#09131F; --surface:#102036; --ink:#E5ECF5; --muted:#93A4BB; --line:#223652;
+  --band:#0B1A30; --band-ink:#F2F6FB; --teal:#33C2C0; --teal-soft:#123537; --amber:#F3AE4E; --amber-soft:#3A2B14;
+  --good:#4CC583; --good-soft:#123423; --bad:#F07A70; --bad-soft:#3D1A18; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#09131F; --surface:#102036; --ink:#E5ECF5; --muted:#93A4BB; --line:#223652;
+  --band:#0B1A30; --band-ink:#F2F6FB; --teal:#33C2C0; --teal-soft:#123537; --amber:#F3AE4E; --amber-soft:#3A2B14;
+  --good:#4CC583; --good-soft:#123423; --bad:#F07A70; --bad-soft:#3D1A18; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.mono,.n{font-family:var(--f-mono);font-weight:700;font-size:.93em}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+
+.band{background:var(--band);color:var(--band-ink);border-bottom:4px solid var(--teal)}
+.band .wrap{padding-block:30px 26px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:700}
+.band .eyebrow{color:#5FD3D1}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.05;margin:6px 0 8px;text-wrap:balance}
+.tag{margin:0;color:#B8C6DA;max-width:60ch}
+
+nav.chapters{position:sticky;top:env(safe-area-inset-top,0px);z-index:25;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.chapters .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+nav.chapters a{flex:0 0 auto;text-decoration:none;color:var(--ink);font-weight:600;font-size:14px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+nav.chapters a .p{font-family:var(--f-mono);font-size:12px;color:var(--teal)}
+nav.chapters a:hover{border-color:var(--teal)}
+
+section.ch{padding-block:40px 12px;border-bottom:1px solid var(--line)}
+.ch-head{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.ch-num{font-family:var(--f-mono);font-weight:700;color:var(--amber);font-size:15px}
+h2{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3.6vw,32px);line-height:1.15;margin:0;text-wrap:balance}
+.lead{color:var(--muted);max-width:66ch;margin:6px 0 20px}
+h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:28px 0 12px}
+
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.note h4{margin:0 0 6px;font-size:16px}
+.note p{margin:0 0 6px;font-size:15px}
+.note p:last-child{margin-bottom:0}
+.key{background:var(--band);color:var(--band-ink);border-color:var(--band)}
+.key h4{color:#5FD3D1}
+.key .mono{color:#F3AE4E}
+
+/* fraction table */
+.ftools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toggle{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px}
+.toggle[aria-pressed="true"]{background:var(--band);color:var(--band-ink);border-color:var(--band)}
+.ftable{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+@media (max-width:640px){.ftable{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:420px){.ftable{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.fcell{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:center;cursor:pointer;color:var(--ink)}
+.fcell .f{font-family:var(--f-mono);font-weight:700;color:var(--teal);font-size:15px}
+.fcell .v{font-family:var(--f-mono);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.fcell .x{font-size:12px;color:var(--muted)}
+.hidep .fcell:not(.open) .v,.hidep .fcell:not(.open) .x{visibility:hidden}
+.fcell sup,.fcell sub,.mf sup,.mf sub{font-size:.7em}
+
+.pairs-scroll{overflow-x:auto}
+table.pairs{border-collapse:collapse;font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums;min-width:520px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table.pairs th{font-family:var(--f-body);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line)}
+table.pairs td{padding:6px 12px;border-bottom:1px solid var(--line)}
+table.pairs td.up{color:var(--good)} table.pairs td.dn{color:var(--bad)}
+
+/* methods */
+.methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.method{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:4px solid var(--teal)}
+.method:nth-child(2){border-top-color:var(--amber)}
+.method:nth-child(3){border-top-color:var(--band)}
+.method h4{margin:0 0 4px}
+.method .when{font-size:13px;color:var(--muted);margin:0 0 10px}
+.method ol{margin:0;padding-left:18px;font-size:15px}
+.example-q{background:var(--amber-soft);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-weight:600}
+
+/* chain */
+.chain-scroll{overflow-x:auto;padding-bottom:4px}
+.chain{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:14px;width:max-content}
+.chain .v{background:var(--band);color:var(--band-ink);border-radius:8px;padding:5px 9px;font-weight:700}
+.chain .v.end{background:var(--teal);color:#fff}
+.chain .m{display:flex;flex-direction:column;align-items:center;color:var(--amber);font-weight:700;font-size:12px;line-height:1.1}
+.chain .m::after{content:"⟶";color:var(--muted);font-size:17px}
+
+/* quick-fire */
+.qf{background:var(--band);color:var(--band-ink);border-radius:14px;padding:20px 22px;display:grid;gap:12px}
+.qf-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.qf-top h4{margin:0;font-family:var(--f-display);font-size:20px}
+.qf-stats{display:flex;gap:16px;font-family:var(--f-mono);font-weight:700;color:#5FD3D1}
+.qf-q{font-family:var(--f-mono);font-size:44px;font-weight:700;color:#F3AE4E;line-height:1}
+.qf-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.qf input{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;font-family:var(--f-mono);font-size:22px;font-weight:700;padding:8px 12px;width:min(270px,100%)}
+.qf input:focus{border-color:#5FD3D1;outline:none}
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,64px));gap:6px;margin-top:4px}
+.kp button{background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.16);border-radius:10px;font-family:var(--f-mono);font-size:20px;font-weight:700;padding:10px 0;touch-action:manipulation}
+.kp button:active{background:rgba(255,255,255,.22)}
+.kp .op{color:#5FD3D1}
+.kp .go{grid-column:span 2;background:#33C2C0;color:#06211F;border-color:#33C2C0;font-size:16px}
+.qf-ask{font-size:14px;color:#B8C6DA;margin-top:-4px;min-height:1.3em}
+.qf .last{font-size:14px;color:#B8C6DA;min-height:1.4em}
+.qf .btn-amber{background:#F3AE4E}
+
+/* practice cards */
+.plist{display:grid;gap:12px}
+.pq{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+.chal{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--band);color:var(--band-ink);border-radius:999px;padding:2px 9px;margin-right:8px;vertical-align:2px}
+.pq.ok{border-color:var(--good)} .pq.no{border-color:var(--bad)}
+.pq-top{display:flex;gap:12px;align-items:flex-start}
+.pq-n{font-family:var(--f-mono);font-weight:700;color:var(--teal);flex:0 0 auto;min-width:28px}
+.pq-q{margin:0;font-size:17px;flex:1;min-width:0}
+.pq-ask{font-size:13px;color:var(--muted);margin:6px 0 10px 40px}
+.answer-row{display:flex;gap:8px;flex-wrap:wrap;margin-left:40px}
+@media (max-width:480px){.pq-ask,.answer-row,.res{margin-left:0!important}}
+.inbox{display:flex;align-items:center;border:2px solid var(--line);border-radius:10px;background:var(--bg);flex:1 1 150px;max-width:230px}
+.inbox:focus-within{border-color:var(--teal)}
+.inbox input{border:0;background:transparent;color:var(--ink);font-family:var(--f-mono);font-size:18px;font-weight:700;padding:7px 10px;width:100%;min-width:0;outline:none}
+.inbox .unit{font-family:var(--f-mono);color:var(--muted);padding:0 10px;font-weight:700}
+.pm{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;width:42px;font-family:var(--f-mono);font-size:18px;font-weight:700}
+.btn{border:0;border-radius:10px;padding:8px 16px;font-weight:700;font-size:14px}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn-amber{background:var(--amber);color:#1B1206}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.res{margin:12px 0 0 40px}
+.verdict{padding:8px 12px;border-radius:8px;font-weight:700;font-size:15px}
+.verdict.ok{background:var(--good-soft);color:var(--good)}
+.verdict.no{background:var(--bad-soft);color:var(--bad)}
+.verdict.hint{background:var(--amber-soft);color:var(--ink);font-weight:500}
+.sol{margin-top:10px;font-size:15px}
+.sol ol{margin:8px 0 0;padding-left:20px}
+.sol li{margin:3px 0}
+.ch-score{font-family:var(--f-mono);font-weight:700;color:var(--muted);font-size:14px}
+
+.sharebar{position:fixed;left:0;right:0;bottom:0;background:var(--band);color:var(--band-ink);border-top:3px solid var(--teal);z-index:20;padding-bottom:env(safe-area-inset-bottom,0px)}
+.sharebar .wrap{display:flex;gap:10px 14px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:10px}
+.sharebar .sc{font-family:var(--f-mono);font-weight:700}
+.sharebar input{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:8px;padding:8px 10px;font:inherit;font-size:14px;width:140px}
+.sharebar input::placeholder{color:#9FB0C7}
+.share-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wa{background:#25D366;color:#06210F;text-decoration:none;border-radius:8px;padding:8px 14px;font-weight:700;font-size:14px}
+.copy{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600}
+.toast{font-size:13px;color:#5FD3D1}
+footer{color:var(--muted);font-size:13px;padding-block:24px;text-align:center}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}*{box-sizing:border-box}</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div class="eyebrow">IMS Jaipur · CAT / IPMAT · Percentages</div>
+    <h1>Percentages Revision Kit</h1>
+    <p class="tag">Revise each concept, then solve its practice questions right below. Type an answer and press Check to see the full solution.</p>
+  </div>
+</header>
+
+<nav class="chapters" aria-label="Chapters">
+  <div class="wrap">
+    <a href="#fractions">1 · Fractions → %<span class="p" id="qfNav"></span></a>
+    <a href="#factors">2 · Fractions as factors<span class="p" data-chs="factors"></span></a>
+    <a href="#successive">3 · Successive change<span class="p" data-chs="successive"></span></a>
+    <a href="#product">4 · Product of values<span class="p" data-chs="product"></span></a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ CHAPTER 1 ============ -->
+<section class="ch" id="fractions">
+  <div class="ch-head"><span class="ch-num">Chapter 1</span><h2>Fractions 1/1 to 1/20 as percentages</h2></div>
+  <p class="lead">Every percentage shortcut in this chapter rests on knowing these 20 values cold. Hide the values and tap a card to test yourself.</p>
+  <div class="ftools">
+    <button class="toggle" id="hideBtn" aria-pressed="false">Hide percentages</button>
+    <span class="ch-score" style="font-weight:500">Tap a card to reveal it when hidden.</span>
+  </div>
+  <div class="ftable" id="ftable"></div>
+
+  <h3>How to build them instead of memorising blindly</h3>
+  <div class="notes">
+    <div class="note"><h4>Halving chain</h4><p><span class="mono">1/2 = 50 → 1/4 = 25 → 1/8 = 12.5 → 1/16 = 6.25</span></p><p><span class="mono">1/3 = 33.33 → 1/6 = 16.67 → 1/12 = 8.33</span></p><p><span class="mono">1/5 = 20 → 1/10 = 10 → 1/20 = 5</span></p></div>
+    <div class="note"><h4>Multiples k/n</h4><p>Multiply the unit value. <span class="mono">3/8 = 3 × 12.5 = 37.5</span>, <span class="mono">5/6 = 5 × 16.67 = 83.33</span>, <span class="mono">2/7 = 28.57</span>.</p><p>Or use the complement: <span class="mono">7/8 = 100 − 12.5 = 87.5</span>.</p></div>
+    <div class="note"><h4>The odd ones</h4><p><span class="mono">1/7 = 14.28</span> (digits 142857 repeat for every k/7).</p><p><span class="mono">1/9 = 11.11</span>, <span class="mono">1/11 = 9.09</span> (k/11 = k × 9.09: 18.18, 27.27 …).</p><p><span class="mono">1/13 ≈ 7.69, 1/17 ≈ 5.88, 1/19 ≈ 5.26</span>.</p></div>
+    <div class="note"><h4>Reverse: % → fraction</h4><p>Spot the unit fraction. <span class="mono">62.5% = 5 × 12.5 = 5/8</span>, <span class="mono">44.44% = 4/9</span>, <span class="mono">18.18% = 2/11</span>.</p></div>
+  </div>
+
+  <h3>Quick-fire drill · 60 seconds</h3>
+  <div class="qf" id="qf1">
+    <div class="qf-top"><h4>How many can you convert in a minute?</h4><div class="qf-stats"><span class="t">60s</span><span class="sc">0 correct</span><span class="bs"></span></div></div>
+    <div class="qf-q">1/8</div>
+    <div class="qf-ask"></div>
+    <form class="qf-row" autocomplete="off">
+      <input placeholder="%" aria-label="Your answer" disabled>
+      <button class="btn btn-amber" type="button">Start</button>
+    </form>
+    <div class="kp" hidden>
+      <button type="button">7</button><button type="button">8</button><button type="button">9</button><button type="button" class="op" data-k="del" aria-label="Delete">⌫</button>
+      <button type="button">4</button><button type="button">5</button><button type="button">6</button><button type="button" class="op">/</button>
+      <button type="button">1</button><button type="button">2</button><button type="button">3</button><button type="button" class="op">−</button>
+      <button type="button">0</button><button type="button">.</button><button type="button" class="go" data-k="go">Enter ↵</button>
+    </div>
+    <div class="last">Type the % value to 2 decimals (14.28 or 14.29 both fine) and press Enter.</div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 2 ============ -->
+<section class="ch" id="factors">
+  <div class="ch-head"><span class="ch-num">Chapter 2</span><h2>Using fractions as multiplying factors</h2></div>
+  <p class="lead">A percentage change is a multiplication. Write the factor as a fraction and the arithmetic usually cancels down to nothing.</p>
+  <div class="notes">
+    <div class="note key"><h4>The rule</h4><p>Increase by <span class="mono">1/n</span> ⇒ multiply by <span class="mono">(n+1)/n</span></p><p>Decrease by <span class="mono">1/n</span> ⇒ multiply by <span class="mono">(n−1)/n</span></p></div>
+    <div class="note"><h4>Example</h4><p>Price ₹840 rises by 12.5% (= 1/8).</p><p>New = <span class="mono">840 × 9/8 = 105 × 9 = ₹945</span>. No decimals needed.</p></div>
+    <div class="note"><h4>Going back to the old value</h4><p>Flip the fraction. After +14.28%, new = old × 8/7, so <span class="mono">old = new × 7/8</span>.</p></div>
+    <div class="note"><h4>Undo a change</h4><p>+1/n is undone by −1/(n+1). <span class="mono">+25% (×5/4)</span> is undone by <span class="mono">×4/5 = −20%</span>.</p><p>−1/n is undone by +1/(n−1). <span class="mono">−20% (×4/5)</span> is undone by <span class="mono">×5/4 = +25%</span>.</p></div>
+  </div>
+  <h3>Factor table</h3>
+  <div class="pairs-scroll"><table class="pairs" id="pairs"><thead><tr><th>Fraction</th><th>%</th><th>Increase factor</th><th>Decrease factor</th></tr></thead><tbody></tbody></table></div>
+
+  <h3>Practice <span class="ch-score" data-chs="factors"></span></h3>
+  <div class="plist" data-ch="factors"></div>
+</section>
+
+<!-- ============ CHAPTER 3 ============ -->
+<section class="ch" id="successive">
+  <div class="ch-head"><span class="ch-num">Chapter 3</span><h2>Successive percentage change</h2></div>
+  <p class="lead">Three ways to solve the same question. Learn all three, then pick the fastest one for the numbers in front of you.</p>
+  <div class="example-q">Example: A price is increased by 20% and then decreased by 25%. Find the net % change.</div>
+  <div class="methods">
+    <div class="method"><h4>A. Take the initial value as 100</h4><p class="when">Best for 3 or more changes, and when you need actual values.</p>
+      <div class="chain-scroll"><div class="chain"><span class="v">100</span><span class="m">+20%</span><span class="v">120</span><span class="m">−25%</span><span class="v end">90</span></div></div>
+      <ol style="margin-top:10px"><li>100 → 120 → 90</li><li>Net change = 90 − 100 = <b>−10%</b></li></ol></div>
+    <div class="method"><h4>B. Net % change formula</h4><p class="when">Best for exactly two changes with round numbers.</p>
+      <ol><li><span class="mono">Net = a + b + ab/100</span></li><li>= 20 + (−25) + (20 × −25)/100</li><li>= −5 − 5 = <b>−10%</b></li></ol></div>
+    <div class="method"><h4>C. Multiplying factor</h4><p class="when">Best when the % values are fraction-friendly (12.5, 16.67, 33.33 …).</p>
+      <ol><li>+20% = ×6/5, −25% = ×3/4</li><li><span class="mono">6/5 × 3/4 = 9/10</span></li><li>9/10 = 0.9 ⇒ <b>−10%</b></li></ol></div>
+  </div>
+  <h3>Results worth remembering</h3>
+  <div class="notes">
+    <div class="note"><h4>Same % up and down</h4><p>Net = <span class="mono">−x²/100</span>, in either order. +10% then −10% = −1%.</p></div>
+    <div class="note"><h4>Order does not matter</h4><p>Multiplication is commutative, so +20% then −25% equals −25% then +20%.</p></div>
+    <div class="note"><h4>Successive discounts</h4><p>20% and 10% ⇒ <span class="mono">20 + 10 − 2 = 28%</span>, never simply 30%.</p></div>
+    <div class="note"><h4>Unknown second change</h4><p>Second factor = overall factor ÷ first factor.</p></div>
+  </div>
+
+  <h3>Practice <span class="ch-score" data-chs="successive"></span></h3>
+  <div class="plist" data-ch="successive"></div>
+</section>
+
+<!-- ============ CHAPTER 4 ============ -->
+<section class="ch" id="product">
+  <div class="ch-head"><span class="ch-num">Chapter 4</span><h2>Product of values = new value</h2></div>
+  <p class="lead">When a quantity is a product (P = A × B), a change in A and a change in B act on P exactly like two successive changes. Every method from Chapter 3 works here.</p>
+  <div class="notes">
+    <div class="note key"><h4>The idea</h4><p>New P = <span class="mono">(A × factor₁) × (B × factor₂)</span> = Old P × factor₁ × factor₂</p></div>
+    <div class="note"><h4>Where it shows up</h4><p>Area = L × B · Expenditure = Price × Consumption · Revenue = Price × Units · Distance = Speed × Time · Work = Men × Hours × Days</p></div>
+    <div class="note"><h4>Product stays the same</h4><p>The other factor must invert. Price ×5/4 ⇒ consumption ×4/5, a <span class="mono">20%</span> cut.</p></div>
+    <div class="note"><h4>Squares and cubes</h4><p>Side +10% ⇒ area <span class="mono">(11/10)² = +21%</span>, volume <span class="mono">(11/10)³ = +33.1%</span>.</p></div>
+  </div>
+  <div class="example-q" style="margin-top:16px">Example: Length +25%, breadth −20%. Area? &nbsp;<span class="mono">5/4 × 4/5 = 1</span> ⇒ no change. By formula: 25 − 20 − 5 = 0%.</div>
+
+  <h3>Practice <span class="ch-score" data-chs="product"></span></h3>
+  <div class="plist" data-ch="product"></div>
+</section>
+
+<footer>IMS Jaipur · Curated by Smarth Sir</footer>
+</main>
+
+<div class="sharebar">
+  <div class="wrap">
+    <div class="sc" id="barScore">Practice 0 / 0</div>
+    <div class="share-actions">
+      <label for="stuName" class="toast" style="color:#B8C6DA">Name</label>
+      <input id="stuName" placeholder="Your name" autocomplete="name">
+      <a class="wa" id="waLink" href="https://wa.me/" target="_blank" rel="noopener">Share with mentor</a>
+      <button class="copy" id="copyBtn">Copy result</button>
+      <span class="toast" id="toast"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const fmt=n=>{let r=Math.round(n*100)/100; if(Object.is(r,-0)||Math.abs(r)<1e-9) r=0; return String(r).replace('-','−');};
+const sg=n=>(n>0?'+':'')+fmt(n);
+const N=x=>`<span class="n">${x}</span>`;
+const inr=x=>'₹'+Number(x).toLocaleString('en-IN');
+const mixed=(n)=>{ const q=Math.floor(100/n), r=100-q*n; if(!r) return String(q); const g=(a,b)=>b?g(b,a%b):a; const d=g(r,n); return `${q}<sup>${r/d}</sup>⁄<sub>${n/d}</sub>`; };
+
+/* ---------- Chapter 1 table ---------- */
+const ft=$('ftable');
+for(let n=1;n<=20;n++){
+  const b=document.createElement('button'); b.className='fcell'; b.type='button';
+  b.innerHTML=`<div class="f">1/${n}</div><div class="v">${fmt(100/n)}%</div><div class="x">${mixed(n)}%</div>`;
+  b.addEventListener('click',()=>b.classList.toggle('open'));
+  ft.appendChild(b);
+}
+$('hideBtn').addEventListener('click',e=>{ const on=e.currentTarget.getAttribute('aria-pressed')!=='true'; e.currentTarget.setAttribute('aria-pressed',on); e.currentTarget.textContent=on?'Show percentages':'Hide percentages'; ft.classList.toggle('hidep',on); ft.querySelectorAll('.fcell').forEach(c=>c.classList.remove('open')); });
+
+/* ---------- Chapter 2 factor table ---------- */
+const tb=document.querySelector('#pairs tbody');
+[2,3,4,5,6,7,8,9,10,11,12,16,20].forEach(n=>{
+  tb.insertAdjacentHTML('beforeend',`<tr><td>1/${n}</td><td>${fmt(100/n)}%</td><td class="up">×${n+1}/${n}</td><td class="dn">×${n-1}/${n}</td></tr>`);
+});
+
+/* ---------- Quick-fire (shared engine) ---------- */
+function makeQF(root,key,gen){
+  const st={best:0,last:null,rounds:0}; let cur=null,on=false,left=60,c=0,a=0,timer=null;
+  const q=root.querySelector('.qf-q'), ask=root.querySelector('.qf-ask'), inp=root.querySelector('input'), btn=root.querySelector('.btn'),
+        kp=root.querySelector('.kp'), tEl=root.querySelector('.t'), sEl=root.querySelector('.sc'), bEl=root.querySelector('.bs'), lastEl=root.querySelector('.last'), form=root.querySelector('form');
+  try{ st.best=+localStorage.getItem(key)||0; }catch(e){}
+  const showBest=()=>{ bEl.textContent=st.best?`best ${st.best}`:''; }; showBest();
+  const next=()=>{ let n; do{ n=gen(); }while(cur&&n.q===cur.q); cur=n; q.innerHTML=n.q; ask.textContent=n.ask||''; inp.value='';  };
+  const end=()=>{ on=false; clearInterval(timer); inp.disabled=true; kp.hidden=true; btn.textContent='Play again'; btn.hidden=false;
+    st.rounds++; st.last={c,a}; if(c>st.best){ st.best=c; try{localStorage.setItem(key,c);}catch(e){} }
+    showBest(); lastEl.textContent=`Time up. ${c} correct out of ${a} attempted.`; updateBar(); };
+  btn.addEventListener('click',()=>{ on=true; left=60; c=0; a=0; sEl.textContent='0 correct'; tEl.textContent='60s';
+    inp.disabled=false; kp.hidden=false; btn.hidden=true; lastEl.textContent=''; next(); inp.focus();
+    clearInterval(timer); timer=setInterval(()=>{ left--; tEl.textContent=left+'s'; if(left<=0) end(); },1000); });
+  inp.setAttribute('inputmode','none');
+  kp.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b||!on) return;
+    const k=b.dataset.k; if(k==='go'){ form.requestSubmit?form.requestSubmit():form.dispatchEvent(new Event('submit',{cancelable:true})); return; }
+    if(k==='del'){ inp.value=inp.value.slice(0,-1); return; }
+    inp.value+=b.textContent.trim(); });
+  form.addEventListener('submit',e=>{ e.preventDefault(); if(!on) return; const u=parse(inp.value); if(isNaN(u)) return;
+    a++; const ok=Math.abs(u-cur.ans)<=cur.tol; if(ok){ c++; sEl.textContent=c+' correct'; }
+    lastEl.textContent=`${cur.show}  ${ok?'✓':'✗ you typed '+inp.value.trim()}`; next(); if(!matchMedia('(pointer:coarse)').matches) inp.focus(); });
+  return st;
+}
+const qf1Pool=[];
+for(let n=2;n<=20;n++) qf1Pool.push([1,n]);
+[[3,8],[5,8],[7,8],[2,3],[3,4],[5,6],[2,7],[3,7],[4,9],[5,12],[7,12],[3,16],[2,9],[3,11],[4,5],[3,5]].forEach(p=>qf1Pool.push(p));
+const QF1=makeQF($('qf1'),'qfBest',()=>{ const p=qf1Pool[Math.floor(Math.random()*qf1Pool.length)]; const v=p[0]*100/p[1];
+  return {q:p[0]+'/'+p[1],ans:v,tol:0.06,show:`${p[0]}/${p[1]} = ${fmt(v)}%`}; });
+/* ---------- parsing ---------- */
+function parse(str){
+  let s=String(str).trim().replace(/[−–—]/g,'-').replace(/[%₹×]/g,'').replace(/,/g,'').replace(/\s+/g,'');
+  if(!s) return NaN;
+  const m=s.match(/^([+-]?)(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if(m){ const v=parseFloat(m[2])/parseFloat(m[3]); return m[1]==='-'?-v:v; }
+  return /^[+-]?\d*\.?\d+$/.test(s)?parseFloat(s):NaN;
+}
+const isRight=(u,a,tol)=>Math.abs(u-a)<=(tol!==undefined?tol:Math.max(0.1,Math.abs(a)*0.002));
+
+/* ---------- chain helper ---------- */
+const chain=(start,steps)=>{ // steps: [[label, newValue], ...]
+  return '<div class="chain-scroll"><div class="chain"><span class="v">'+fmt(start)+'</span>'+steps.map((s,i)=>`<span class="m">${s[0]}</span><span class="v ${i===steps.length-1?'end':''}">${fmt(s[1])}</span>`).join('')+'</div></div>';
+};
+
+/* ---------- questions ---------- */
+// fields: q, ask, ans, unit, signed, disp (answer text), hint, sol (html), tol
+const Q={
+factors:[
+ {q:`What is the multiplying factor for an increase of ${N('20%')}? Give it as a fraction.`,ask:'Factor (e.g. 5/4)',ans:1.2,unit:'',disp:'6/5',frac:true,tol:0.0005,hint:'20% = 1/5.',sol:`<ol><li>+1/5 ⇒ ×(5+1)/5 = <b>6/5</b></li></ol>`},
+ {q:`The price of a shirt is ${inr(840)}. It rises by ${N('12.5%')}. What is the new price?`,ask:'New price in ₹',ans:945,unit:'',hint:'12.5% = 1/8 ⇒ ×9/8.',sol:`${chain(840,[['×9/8',945]])}<ol><li>840 × 9/8 = 105 × 9 = <b>₹945</b></li></ol>`},
+ {q:`After a ${N('25%')} increase, the price of a pair of shoes is ${inr(750)}. What was the old price?`,ask:'Old price in ₹',ans:600,unit:'',hint:'25% = 1/4 ⇒ new = old × 5/4.',sol:`${chain(600,[['×5/4',750]])}<ol><li>Old = 750 × 4/5 = <b>₹600</b></li></ol>`},
+ {q:`A's salary is ${N('20%')} less than B's. By what percentage is B's salary more than A's?`,ask:'% more',ans:25,unit:'%',hint:'A = 4/5 B ⇒ B = 5/4 A.',sol:`<ol><li>A = (1 − 1/5)B = 4/5 B</li><li>B = 5/4 A = (1 + 1/4)A ⇒ <b>25%</b> more</li></ol>`},
+ {q:`The price of a laptop was ${inr(36000)}. It increases by ${N('8.33%')}. What is the new price?`,ask:'New price in ₹',ans:39000,unit:'',hint:'8.33% = 1/12 ⇒ ×13/12.',sol:`${chain(36000,[['×13/12',39000]])}<ol><li>36000 ÷ 12 = 3000</li><li>New = 3000 × 13 = <b>₹39,000</b></li></ol>`},
+ {q:`A company has ${N('2,400')} employees this year, a decrease of ${N('7.69%')} over last year. How many employees did it have last year?`,ask:'Employees last year',ans:2600,unit:'',hint:'7.69% = 1/13 ⇒ this year = last year × 12/13.',sol:`${chain(2600,[['×12/13',2400]])}<ol><li>Last year = 2400 × 13/12</li><li>= 200 × 13 = <b>2,600</b></li></ol>`},
+ {q:`After a ${N('6.25%')} increase, the price of a gadget is ${inr(850)}. What was the old price?`,ask:'Old price in ₹',ans:800,unit:'',hint:'6.25% = 1/16 ⇒ ×17/16.',sol:`${chain(800,[['×17/16',850]])}<ol><li>Old = 850 × 16/17 = 50 × 16 = <b>₹800</b></li></ol>`},
+ {q:`A quantity is multiplied by ${N('13/16')}. What is the percentage change?`,ask:'% change (negative for a decrease)',ans:-18.75,unit:'%',signed:true,hint:'13/16 = 1 − 3/16.',sol:`<ol><li>13/16 = 1 − 3/16</li><li>3/16 = 3 × 6.25 = 18.75 ⇒ <b>−18.75%</b></li></ol>`},
+ {q:`The price of petrol goes up by ${N('9.09%')}. By what percentage must you cut consumption to keep your petrol expense the same?`,ask:'% reduction',ans:100/12,unit:'%',hint:'9.09% = 1/11. Price ×12/11 ⇒ consumption ×11/12.',sol:`${chain(100,[['×12/11',1200/11],['×11/12',100]])}<ol><li>Consumption factor = 11/12 = 1 − 1/12</li><li>Cut = 1/12 = <b>8.33%</b></li><li>Smart cut: up by 1/n ⇒ down by 1/(n+1).</li></ol>`},
+ {q:`Rohan scored ${N('42.86%')} more marks than Mohit. By what percentage are Mohit's marks less than Rohan's?`,ask:'% less',ans:30,unit:'%',hint:'42.86% = 3/7.',sol:`<ol><li>Rohan = (1 + 3/7) Mohit = 10/7 Mohit</li><li>Mohit = 7/10 Rohan = (1 − 3/10) Rohan ⇒ <b>30%</b> less</li></ol>`},
+ {chal:1,q:`A price rises by ${N('9.09%')}, then falls by ${N('8.33%')}, and then rises by ${N('7.69%')}. The final price is ${inr(1400)}. What was the original price?`,ask:'Original price in ₹',ans:1300,unit:'',hint:'Write each change as a fraction: 1/11, 1/12, 1/13.',sol:`${chain(1300,[['×12/11',15600/11],['×11/12',1300],['×14/13',1400]])}<ol><li>Factors: 12/11 × 11/12 × 14/13 = 14/13</li><li>Original = 1400 × 13/14 = <b>₹1,300</b></li></ol>`},
+ {chal:1,q:`A's salary is ${N('6.25%')} more than B's. A then takes a ${N('5.88%')} pay cut and B gets an ${N('11.11%')} raise. Now B earns ${inr(2000)} more than A. Find B's original salary.`,ask:'B’s original salary in ₹',ans:18000,unit:'',hint:'A = 17/16 B, then ×16/17. B ×10/9.',sol:`<ol><li>A after cut = 17/16 × 16/17 × B = B</li><li>B after raise = 10/9 B</li><li>Gap = B/9 = 2000 ⇒ B = <b>₹18,000</b></li></ol>`},
+ {chal:1,q:`A's income is ${N('12.5%')} more than B's, and B's income is ${N('16.67%')} less than C's. C earns ${inr(2880)} more than A. Find A's income.`,ask:'A’s income in ₹',ans:43200,unit:'',hint:'A = 9/8 B and B = 5/6 C.',sol:`<ol><li>A = 9/8 × 5/6 C = 15/16 C</li><li>C − A = C/16 = 2880 ⇒ C = 46,080</li><li>A = 15/16 × 46080 = <b>₹43,200</b></li></ol>`},
+ {chal:1,q:`The price of cooking oil rises by ${N('14.28%')}. A family cuts its consumption so that its expenditure on oil rises by only ${N('4%')}. By what percentage did it cut consumption?`,ask:'% cut in consumption',ans:9,unit:'%',hint:'Consumption factor = 1.04 ÷ 8/7.',sol:`<ol><li>Consumption factor = 1.04 × 7/8 = 0.91</li><li>Cut = <b>9%</b></li></ol>`},
+ {chal:1,q:`A number is increased by ${N('33.33%')} and the result is then decreased by ${N('33.33%')}. The final value is ${N(64)} less than the original number. Find the original number.`,ask:'Original number',ans:576,unit:'',hint:'4/3 × 2/3 = 8/9.',sol:`<ol><li>Final = 8/9 of the original, so the loss = 1/9 of the original</li><li>1/9 × x = 64 ⇒ x = <b>576</b></li></ol>`}
+],
+successive:[
+ {q:`A value is increased by ${N('66⅔%')} and then decreased by ${N('25%')}. Find the net percentage change.`,ask:'Net % change',ans:25,unit:'%',signed:true,hint:'66⅔% = 2/3 ⇒ ×5/3.',sol:`${chain(100,[['×5/3',500/3],['×3/4',125]])}<ol><li>5/3 × 3/4 = 5/4</li><li>Net = <b>+25%</b></li></ol>`},
+ {q:`A value is increased by ${N('22 2/9%')} and then decreased by ${N('10%')}. Find the net percentage change.`,ask:'Net % change',ans:10,unit:'%',signed:true,hint:'22 2/9% = 2/9 ⇒ ×11/9.',sol:`${chain(100,[['×11/9',1100/9],['×9/10',110]])}<ol><li>11/9 × 9/10 = 11/10</li><li>Net = <b>+10%</b></li></ol>`},
+ {q:`A value is decreased by ${N('37.5%')} and then increased by ${N('33⅓%')}. Find the net percentage change.`,ask:'Net % change (negative for a decrease)',ans:-100/6,unit:'%',signed:true,hint:'×5/8 then ×4/3.',sol:`${chain(100,[['×5/8',62.5],['×4/3',250/3]])}<ol><li>5/8 × 4/3 = 5/6</li><li>Net = −1/6 = <b>−16.67%</b></li></ol>`},
+ {q:`Three successive discounts of ${N('10%')}, ${N('20%')} and ${N('25%')} are given on a marked price. What single discount are they equal to?`,ask:'Single discount %',ans:46,unit:'%',hint:'×9/10 × 4/5 × 3/4.',sol:`${chain(100,[['×9/10',90],['×4/5',72],['×3/4',54]])}<ol><li>Price after discounts = 54</li><li>Single discount = <b>46%</b></li></ol>`},
+ {q:`A scooter loses ${N('20%')} of its value every year. By what percentage will its value have fallen after 3 years?`,ask:'% fall',ans:48.8,unit:'%',hint:'Factor (4/5)³.',sol:`${chain(100,[['×4/5',80],['×4/5',64],['×4/5',51.2]])}<ol><li>(4/5)³ = 64/125 = 0.512</li><li>Fall = 100 − 51.2 = <b>48.8%</b></li></ol>`},
+ {q:`The price of a phone rose by ${N('20%')} in one year and by ${N('25%')} the next. It now costs ${inr(27000)}. What did it cost two years ago?`,ask:'Price two years ago in ₹',ans:18000,unit:'',hint:'20 + 25 + 5 = 50% total.',sol:`${chain(18000,[['×6/5',21600],['×5/4',27000]])}<ol><li>Net change = 20 + 25 + 5 = 50% ⇒ factor 3/2</li><li>Old = 27000 × 2/3 = <b>₹18,000</b></li></ol>`},
+ {q:`Kavya's salary increases by ${N('20%')} while the income tax she pays increases by ${N('50%')}. What is the percentage increase in her tax rate?`,ask:'% increase in tax rate',ans:25,unit:'%',hint:'Tax rate = Tax ÷ Salary.',sol:`<ol><li>Tax rate factor = 1.5 ÷ 1.2 = 5/4</li><li>Tax rate rises by <b>25%</b></li></ol>`},
+ {q:`A's income is ${N('20%')} more than B's, and B's income is ${N('25%')} less than C's. By what percentage is C's income more than A's?`,ask:'% more',ans:100/9,unit:'%',hint:'Take C = 100.',sol:`${chain(100,[['C→B ×3/4',75],['B→A ×6/5',90]])}<ol><li>C = 100 ⇒ B = 75 ⇒ A = 90</li><li>C more than A = 10/90 = 1/9 = <b>11.11%</b></li></ol>`},
+ {q:`The total marks of Arun and Varun is ${N('150%')} more than Arun's marks. The difference between their marks is what percentage of Varun's marks?`,ask:'% of Varun’s marks',ans:100/3,unit:'%',hint:'Arun = 100 ⇒ total = 250.',sol:`<ol><li>Arun = 100, total = 250 ⇒ Varun = 150</li><li>Difference = 50 = 50/150 of Varun = <b>33.33%</b></li></ol>`},
+ {q:`A price is increased by x% and then decreased by x%. The net result is a ${N('4%')} decrease. Find x.`,ask:'x (in %)',ans:20,unit:'%',hint:'Net = −x²/100.',sol:`<ol><li>x²/100 = 4 ⇒ x² = 400</li><li>x = <b>20%</b></li></ol>`},
+ {chal:1,q:`In an election, ${N('60%')} of voters back X and the rest back Y. Later, ${N('25%')} of X's supporters switch to Y and ${N('10%')} of Y's supporters switch to X. What percentage of all voters now back X?`,ask:'% of voters backing X',ans:49,unit:'%',hint:'Take 100 voters.',sol:`<ol><li>X loses 25% of 60 = 15; Y loses 10% of 40 = 4 to X</li><li>X = 60 − 15 + 4 = <b>49%</b></li></ol>`},
+ {chal:1,q:`A shopkeeper raises a price by ${N('10%')} and then by another ${N('20%')}. What single discount on the final price brings it back to the original price?`,ask:'Discount %',ans:800/33,unit:'%',hint:'Net increase is 32%, factor 33/25.',sol:`<ol><li>Net factor = 1.1 × 1.2 = 1.32 = 33/25</li><li>Discount = 1 − 25/33 = 8/33 = <b>24.24%</b></li></ol>`},
+ {chal:1,q:`Neel's salary goes up by ${N('25%')} and his tax rate goes up from ${N('10%')} to ${N('12%')}. By what percentage does the tax he pays increase?`,ask:'% increase in tax paid',ans:50,unit:'%',signed:true,hint:'Tax = Salary × Rate.',sol:`<ol><li>Rate factor = 12/10 = 6/5; salary factor = 5/4</li><li>Tax factor = 5/4 × 6/5 = 3/2 ⇒ <b>+50%</b></li></ol>`},
+ {chal:1,q:`A shop's sales grew by x% in one year and by 2x% in the next year. The total growth over the two years was ${N('32%')}. Find x.`,ask:'x (in %)',ans:10,unit:'%',hint:'Try (1 + x/100)(1 + 2x/100) = 1.32.',sol:`<ol><li>x + 2x + 2x²/100 = 32</li><li>x = 10 works: 10 + 20 + 2 = 32 ⇒ <b>x = 10</b></li></ol>`},
+ {chal:1,q:`A price is increased by ${N('20%')}, decreased by ${N('20%')}, increased by ${N('20%')} and decreased by ${N('20%')}, in that order. Find the net percentage change.`,ask:'Net % change (negative for a decrease)',ans:-7.84,unit:'%',signed:true,hint:'Each up-down pair gives −4%.',sol:`${chain(100,[['+20%',120],['−20%',96],['+20%',115.2],['−20%',92.16]])}<ol><li>Each pair: −x²/100 = −4% ⇒ factor 0.96</li><li>0.96² = 0.9216 ⇒ <b>−7.84%</b></li></ol>`}
+],
+product:[
+ {q:`The length of a rectangle is increased by ${N('25%')}. By what percentage must the breadth change so that the area increases by ${N('10%')}?`,ask:'% change in breadth (negative for a decrease)',ans:-12,unit:'%',signed:true,hint:'Breadth factor = 1.10 ÷ 1.25.',sol:`<ol><li>Area factor = L factor × B factor ⇒ 1.1 = 1.25 × B</li><li>B = 1.1/1.25 = 0.88 ⇒ <b>−12%</b></li></ol>`},
+ {q:`The length of a cuboid is increased by ${N('25%')} and its breadth decreased by ${N('20%')}. By what percentage must its height be increased so that the volume increases by ${N('50%')}?`,ask:'% increase in height',ans:50,unit:'%',hint:'5/4 × 4/5 = 1.',sol:`<ol><li>L × B factor = 5/4 × 4/5 = 1</li><li>So height factor must be 1.5 ⇒ <b>+50%</b></li></ol>`},
+ {q:`The number of seats in a stadium is increased by ${N('20%')} and the ticket price by ${N('25%')}. If every seat is sold, by what percentage does revenue increase?`,ask:'% increase in revenue',ans:50,unit:'%',signed:true,hint:'Revenue = Seats × Price.',sol:`${chain(100,[['×6/5',120],['×5/4',150]])}<ol><li>6/5 × 5/4 = 3/2 ⇒ <b>+50%</b></li></ol>`},
+ {q:`A family's monthly expenditure on milk rises by ${N('32%')} even though the price of milk rose by only ${N('20%')}. By what percentage did its milk consumption change?`,ask:'% change in consumption',ans:10,unit:'%',signed:true,hint:'Consumption factor = 1.32 ÷ 1.2.',sol:`<ol><li>Consumption factor = 1.32 / 1.2 = 1.1</li><li>Consumption rose by <b>10%</b></li></ol>`},
+ {q:`The price of rice rises by ${N('25%')} and a family reduces its rice consumption by ${N('16%')}. By what percentage does its expenditure on rice change?`,ask:'% change in expenditure',ans:5,unit:'%',signed:true,hint:'Use a + b + ab/100.',sol:`${chain(100,[['×5/4',125],['×0.84',105]])}<ol><li>25 − 16 − 4 = <b>+5%</b></li></ol>`},
+ {q:`A school estimated its annual income at ${N('₹300 lakh')} and expenditure at ${N('₹240 lakh')}. Actual income turned out ${N('8%')} more than estimated and actual expenditure ${N('15%')} more. Find the difference between actual income and actual expenditure (in ₹ lakh).`,ask:'Difference in ₹ lakh',ans:48,unit:'',hint:'Find each actual value separately.',sol:`<ol><li>Actual income = 300 × 1.08 = 324</li><li>Actual expenditure = 240 × 1.15 = 276</li><li>Difference = <b>₹48 lakh</b></li></ol>`},
+ {q:`The radius of a circular park is increased by ${N('16.67%')}. By what percentage does its area increase?`,ask:'% increase in area',ans:1300/36,unit:'%',signed:true,hint:'(7/6)².',sol:`${chain(100,[['×7/6',700/6],['×7/6',4900/36]])}<ol><li>(7/6)² = 49/36</li><li>Increase = 13/36 = <b>36.11%</b></li></ol>`},
+ {q:`A train's speed is reduced by ${N('16.67%')}. By what percentage does the time to cover the same distance increase?`,ask:'% increase in time',ans:20,unit:'%',hint:'Speed ×5/6 ⇒ time ×6/5.',sol:`<ol><li>Time factor = 6/5 ⇒ <b>+20%</b></li><li>Down by 1/6 ⇒ up by 1/5.</li></ol>`},
+ {q:`To finish a job, the number of workers is increased by ${N('20%')} and the hours worked per day by ${N('25%')}. By what percentage do the days needed change?`,ask:'% change in days (negative for fewer)',ans:-100/3,unit:'%',signed:true,hint:'Workers × Hours × Days is fixed.',sol:`<ol><li>Workers × Hours factor = 6/5 × 5/4 = 3/2</li><li>Days factor = 2/3 ⇒ <b>−33.33%</b></li></ol>`},
+ {q:`The price of sugar rises by ${N('20%')} and a household cuts its consumption by ${N('10%')}. It used to spend ${inr(5000)} a month on sugar. How much does it spend now?`,ask:'New spend in ₹',ans:5400,unit:'',hint:'×6/5 × 9/10.',sol:`${chain(5000,[['×6/5',6000],['×9/10',5400]])}<ol><li>5000 × 6/5 × 9/10 = <b>₹5,400</b></li></ol>`},
+ {chal:1,q:`The length of a cuboid is increased by ${N('20%')} and its breadth decreased by ${N('20%')}. By what percentage must its height change so that the volume stays the same?`,ask:'% change in height',ans:100/24,unit:'%',signed:true,hint:'L × B factor = 0.96 = 24/25.',sol:`<ol><li>L × B factor = 6/5 × 4/5 = 24/25</li><li>Height factor = 25/24 ⇒ <b>+4.17%</b></li></ol>`},
+ {chal:1,q:`When a shop cuts its price by x%, its sales go up by 2x%. Its revenue rises by ${N('12%')}. Find the smaller possible value of x.`,ask:'x (in %)',ans:20,unit:'%',hint:'Try (1 − x/100)(1 + 2x/100) = 1.12.',sol:`<ol><li>−x + 2x − 2x²/100 = 12 ⇒ x − x²/50 = 12</li><li>x = 20: 20 − 8 = 12 ✓ (x = 30 also works)</li><li>Smaller value = <b>20</b></li></ol>`},
+ {chal:1,q:`The price of petrol rises by ${N('25%')}, but Asha can raise her petrol budget by only ${N('10%')}. By what percentage must she reduce the distance she drives?`,ask:'% reduction in distance',ans:12,unit:'%',hint:'Distance factor = 1.10 ÷ 1.25.',sol:`<ol><li>Distance factor = 1.1 / 1.25 = 0.88</li><li>Reduction = <b>12%</b></li></ol>`},
+ {chal:1,q:`If a cyclist increases his speed by ${N('25%')}, he reaches his destination ${N('1 hour')} earlier. How many hours does the journey take at his usual speed?`,ask:'Usual time in hours',ans:5,unit:'',hint:'Speed ×5/4 ⇒ time ×4/5.',sol:`<ol><li>Time drops by 1/5 of the usual time</li><li>1/5 of usual time = 1 hour ⇒ usual time = <b>5 hours</b></li></ol>`},
+ {chal:1,q:`A team of workers finishes a job in ${N('24 days')}. If the number of workers is increased by ${N('20%')} and each works ${N('25%')} more hours per day, how many days will the same job take?`,ask:'Days',ans:16,unit:'',hint:'Workers × Hours × Days is fixed.',sol:`<ol><li>Workers × Hours factor = 6/5 × 5/4 = 3/2</li><li>Days = 24 × 2/3 = <b>16 days</b></li></ol>`}
+]};
+
+/* ---------- render practice ---------- */
+const all=[];
+Object.keys(Q).forEach(ch=>{
+  const box=document.querySelector(`.plist[data-ch="${ch}"]`);
+  Q[ch].forEach((q,i)=>{
+    q.ch=ch; q.id=ch+i; if(q.signed===undefined) q.signed=false; all.push(q);
+    const el=document.createElement('div'); el.className='pq'; el.id='q-'+q.id;
+    el.innerHTML=`<div class="pq-top"><span class="pq-n">${i+1}.</span><p class="pq-q">${q.chal?'<span class="chal">Challenger</span>':''}${q.q}</p></div>
+      <p class="pq-ask">${q.ask}</p>
+      <form class="answer-row" autocomplete="off">
+        ${q.signed?'<button type="button" class="pm" aria-label="Flip sign">±</button>':''}
+        <div class="inbox"><input id="in-${q.id}" inputmode="${q.frac?'text':'decimal'}" aria-label="${q.ask}" placeholder="${q.frac?'a/b':'0'}"><span class="unit">${q.unit}</span></div>
+        <button class="btn btn-primary" type="submit">Check</button>
+        <button class="btn btn-ghost hb" type="button">Hint</button>
+      </form>
+      <div class="res"></div>`;
+    box.appendChild(el);
+    const form=el.querySelector('form'), inp=el.querySelector('input'), res=el.querySelector('.res');
+    el.querySelector('.hb').addEventListener('click',()=>{ if(q.res) return; res.innerHTML=`<div class="verdict hint">Hint: ${q.hint}</div>`; });
+    const pm=el.querySelector('.pm'); if(pm) pm.addEventListener('click',()=>{ let v=inp.value.trim().replace(/[−–—]/g,'-'); inp.value=v.startsWith('-')?v.slice(1):'-'+v; inp.focus(); });
+    form.addEventListener('submit',e=>{
+      e.preventDefault(); if(q.res) return;
+      const u=parse(inp.value);
+      if(isNaN(u)){ res.innerHTML='<div class="verdict no">Enter a number or a fraction like 5/4 first.</div>'; return; }
+      const ok=isRight(u,q.ans,q.tol); q.res=ok?'ok':'no'; q.user=inp.value.trim();
+      el.classList.add(q.res); form.querySelectorAll('input,button').forEach(b=>b.disabled=true);
+      const disp=q.disp||((q.signed?sg(q.ans):fmt(q.ans))+q.unit);
+      res.innerHTML=`<div class="verdict ${q.res}">${ok?'Correct.':'Not quite.'} Answer: <span class="mono">${disp}</span>${ok?'':` · you entered <span class="mono">${q.user}</span>`}</div><div class="sol">${q.sol}</div>`;
+      updateBar();
+    });
+  });
+});
+
+/* ---------- score + share ---------- */
+const CH_NAME={factors:'Factors',successive:'Successive',product:'Product'};
+function chScore(ch){ const qs=all.filter(q=>q.ch===ch); return {c:qs.filter(q=>q.res==='ok').length,a:qs.filter(q=>q.res).length,t:qs.length}; }
+const qfLine=(lab,st)=>`${lab} (60s): `+(st.last?`last ${st.last.c} correct of ${st.last.a}, best ${st.best}, rounds ${st.rounds}`:(st.best?`best ${st.best} (no round this visit)`:'not played yet'));
+function shareText(){
+  const name=$('stuName').value.trim()||'Student';
+  const tot=all.filter(q=>q.res==='ok').length, att=all.filter(q=>q.res).length;
+  const parts=Object.keys(Q).map(ch=>{ const s=chScore(ch); return `${CH_NAME[ch]}: ${s.c}/${s.t}`; }).join(' | ');
+  return `Percentages Revision Kit – IMS Jaipur\nName: ${name}\nPractice (Ch 2–4): ${tot}/${all.length} correct (attempted ${att})\n${parts}\n${qfLine('Quick-fire Fractions → %',QF1)}`;
+}
+function updateBar(){
+  const tot=all.filter(q=>q.res==='ok').length;
+  $('barScore').textContent=`Practice ${tot}/${all.length} · Quick-fire best ${QF1.best}`;
+  $('qfNav').textContent=QF1.best?`best ${QF1.best}`:'';
+  document.querySelectorAll('[data-chs]').forEach(el=>{ const s=chScore(el.dataset.chs); el.textContent=s.a?`${s.c}/${s.t}`:`0/${s.t}`; });
+  $('waLink').href='https://wa.me/?text='+encodeURIComponent(shareText());
+}
+$('stuName').addEventListener('input',()=>{ updateBar(); try{localStorage.setItem('scName',$('stuName').value);}catch(e){} });
+try{ const n=localStorage.getItem('scName'); if(n) $('stuName').value=n; }catch(e){}
+$('copyBtn').addEventListener('click',()=>{
+  const t=shareText(), toast=$('toast');
+  const fallback=()=>{ toast.textContent='Copy blocked. Long-press to copy:'; const ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='width:100%;margin-top:6px'; toast.after(ta); ta.select(); };
+  try{ navigator.clipboard.writeText(t).then(()=>{toast.textContent='Copied';setTimeout(()=>toast.textContent='',2000);},fallback); }catch(e){ fallback(); }
+});
+updateBar();
+})();
+</script>
+
+</body>
+</html>

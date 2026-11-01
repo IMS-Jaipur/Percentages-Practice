@@ -169,7 +169,7 @@ footer{color:var(--muted);font-size:13px;padding-block:24px;text-align:center}
 <header class="band">
   <div class="wrap">
     <div class="eyebrow">IMS Jaipur · CAT / IPMAT · Percentages</div>
-    <h1>Percentages Revision Kit</h1>
+    <h1>Percentages Revision</h1>
     <p class="tag">Revise each concept, then solve its practice questions right below. Type an answer and press Check to see the full solution.</p>
   </div>
 </header>
@@ -462,7 +462,7 @@ function shareText(){
   const name=$('stuName').value.trim()||'Student';
   const tot=all.filter(q=>q.res==='ok').length, att=all.filter(q=>q.res).length;
   const parts=Object.keys(Q).map(ch=>{ const s=chScore(ch); return `${CH_NAME[ch]}: ${s.c}/${s.t}`; }).join(' | ');
-  return `Percentages Revision Kit – IMS Jaipur\nName: ${name}\nPractice (Ch 2–4): ${tot}/${all.length} correct (attempted ${att})\n${parts}\n${qfLine('Quick-fire Fractions → %',QF1)}`;
+  return `Percentages Revision – IMS Jaipur\nName: ${name}\nPractice (Ch 2–4): ${tot}/${all.length} correct (attempted ${att})\n${parts}\n${qfLine('Quick-fire Fractions → %',QF1)}`;
 }
 function updateBar(){
   const tot=all.filter(q=>q.res==='ok').length;
